@@ -22,13 +22,17 @@
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
+      var nick = 'empty';
       $('form').submit(function(){
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
         return false;
       });
       socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+        $('#messages').append($('<li>').text(nick+':'+msg));
+      });
+      socket.on('new user', function(msg){
+        nick = msg;
       });
     </script>
   </body>
