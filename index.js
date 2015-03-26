@@ -8,14 +8,21 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
+  // give the new connection a username
   ++users;
-  nick = 'user'+users;
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
+  var nick = 'user'+users;
+
+  io.emit('chat message', '** '+nick+' connected **');
+
+  socket.on('disconnect', function(){
+    io.emit('chat message', '** '+nick+' disconnected **');
   });
-  io.emit('new user', nick); 
-  io.emit('chat message', '** connected **');
+
+  socket.on('chat message', function(msg){
+    io.emit('chat message', nick+': '+msg);
+  });
 });
+
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
