@@ -12,14 +12,17 @@ io.on('connection', function(socket){
   ++users;
   var nick = 'user'+users;
 
-  io.emit('chat message', '** '+nick+' connected **');
+  d = new Date();
+  io.emit('chat message', d.toLocaleTimeString()+' ** '+nick+' connected **');
 
   socket.on('disconnect', function(){
-    io.emit('chat message', '** '+nick+' disconnected **');
+    d = new Date();
+    io.emit('chat message', d.toLocaleTimeString()+' ** '+nick+' disconnected **');
   });
 
   socket.on('chat message', function(msg){
-    io.emit('chat message', nick+': '+msg);
+    d = new Date();
+    io.emit('chat message', d.toLocaleTimeString()+' '+nick+': '+msg);
   });
 });
 
